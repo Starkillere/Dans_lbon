@@ -1,0 +1,44 @@
+
+---
+
+## 📝 4. **Cahier des charges (extrait)**
+
+```markdown
+# 📘 Cahier des charges — Projet "Dans l'bon"
+
+## 1. Présentation
+L’application **Dans l’bon** vise à faciliter la mise en relation entre étudiants cherchant de l’aide et étudiants souhaitant proposer leur expertise.
+
+## 2. Objectifs
+- Encourager la collaboration et l’entraide entre étudiants.
+- Offrir un outil simple et rapide pour trouver un pair compétent.
+- Créer une communauté d’apprentissage solidaire.
+
+## 3. Public cible
+- Étudiants universitaires ou en école.
+- Niveau Licence / Master principalement.
+
+## 4. Fonctionnalités détaillées
+| Fonction | Description | Priorité |
+|-----------|--------------|-----------|
+| Inscription / Connexion | Authentification sécurisée | Haute |
+| Création de profil | Niveau, matières, bio, photo | Haute |
+| Recherche par critères | Matières, localisation, niveau | Haute |
+| Chat / messagerie | Communication en temps réel | Moyenne |
+| Notifications | Alertes de nouveaux messages | Moyenne |
+| Système de notation | Évaluer l’aide reçue | Moyenne |
+
+## 5. Contraintes techniques
+- Backend : **FastAPI / PostgreSQL**
+- Frontend : **React / TailwindCSS**
+- Hébergement : **Render / Railway / Vercel**
+- Communication : **API REST / WebSocket**
+
+## 6. Sécurité
+- Données chiffrées (HTTPS, JWT).
+- RGPD : suppression de compte et gestion de la vie privée.
+
+## 7. Évolutions prévues
+- Système de visio intégré.
+- Application mobile (React Native).
+- Recommandations par IA selon le profil.
