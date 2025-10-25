@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>VAL — Faciliter la collaboration entre étudiants</title>
+
+  <!-- Chart.js CDN (utilisé pour graphiques) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root{
+      --accent:#c62828; /* rouge poster */
+      --dark:#1f1f1f;
+      --muted:#666;
+      --surface:#fff;
+      --maxw:1100px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background: linear-gradient(180deg,#fbfbfb 0%, #fff 100%);
+      color:var(--dark);
+      -webkit-font-smoothing:antialiased;
+    }
+    header{
+      background: radial-gradient(circle at 10% 10%, rgba(198,40,40,0.06), transparent 20%),
+                  linear-gradient(90deg, rgba(198,40,40,0.04), transparent 40%);
+      padding:36px 16px;
+      border-bottom:1px solid rgba(0,0,0,0.05);
+    }
+    .container{max-width:var(--maxw);margin:0 auto;}
+    .hero{
+      display:flex;gap:24px;align-items:center;flex-wrap:wrap;
+    }
+    .hero-text{flex:1 1 380px;}
+    h1{margin:0 0 8px;font-size:34px;letter-spacing:-0.5px;}
+    p.lead{margin:0;color:var(--muted);}
+    .banner{
+      width:320px;height:220px;flex:0 0 320px;border-radius:10px;overflow:hidden;
+      box-shadow: 0 10px 25px rgba(20,20,20,0.08);
+      background:#fff;display:flex;align-items:center;justify-content:center;
+    }
+    .banner object, .banner img{width:100%;height:100%;object-fit:cover;}
+    main{padding:28px 16px;}
+    .card{background:var(--surface);border-radius:12px;padding:18px;margin-bottom:18px;box-shadow:0 6px 18px rgba(20,20,20,0.04);}
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:20px;}
+    @media (max-width:920px){.grid{grid-template-columns:1fr}}
+    .muted{color:var(--muted);font-size:14px}
+    .btn{display:inline-block;background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600}
+    .btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(198,40,40,0.15)}
+    .qa pre{white-space:pre-wrap;font-family:inherit;background:#f7f7f7;padding:12px;border-radius:8px}
+    footer{padding:18px;color:var(--muted);text-align:center;font-size:13px}
+
+    /* results area */
+    .charts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:920px){.charts{grid-template-columns:1fr}}
+    .chart-wrap{padding:10px}
+    .small{font-size:13px;color:var(--muted)}
+    .import-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    input[type=file]{display:block}
+    .notice{background:#fff8f8;border-left:4px solid var(--accent);padding:10px;border-radius:8px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="hero">
+        <div class="hero-text">
+          <h1>VAL</h1>
+          <p class="lead">Participe à notre questionnaire — aide à trouver la solution pour les étudiants qui ont du mal à trouver des partenaires de travail.</p>
+          <p class="muted">Projet étudiant — visualisation des résultats de l'enquête et pistes d'amélioration.</p>
+        </div>
+
+        <div class="banner" title="Affiche VAL">
+          <!-- Place le fichier PDF ou une image dans assets/VAL.pdf (ou assets/VAL.png).
+               Le <object> permet d'afficher le PDF ; si le navigateur ne peut pas, un lien apparaît. -->
+          <object data="assets/VAL.pdf" type="application/pdf">
+            <a href="assets/VAL.pdf" target="_blank">Voir l'affiche VAL (PDF)</a>
+          </object>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>À propos du projet</h2>
+      <p class="muted">VAL vise à identifier et proposer des solutions pour faciliter le travail collaboratif entre étudiants (trouver des partenaires, lieux, outils…).</p>
+      <p>Objectifs :</p>
+      <ul>
+        <li>Comprendre les habitudes d'étude et les difficultés.</li>
+        <li>Proposer des dispositifs (plateformes, salles, tuteurs) adaptés.</li>
+        <li>Mettre en place un prototype ou une plateforme d'entraide.</li>
+      </ul>
+    </section>
+
+    <div class="grid">
+      <div>
+        <section class="card">
+          <h3>Questionnaire</h3>
+          <p class="muted">Durée estimée : 3–5 minutes.</p>
+
+          <div class="qa">
+            <p><strong>Questions (version affichée) :</strong></p>
+            <pre>
+Quel est ton niveau d’étude actuel ? *
+Bac + 1
+Bac + 2
+Bac + 3
+Bac + 4
+Bac + 5
+Bac ++
+
+Quel est ta filière ou domaine d’étude  *
+Dans quel université étudies tu ? *
+
+Préfères-tu réviser :
+Seul(e)
+En grand groupe / collectif
+Peu importe, selon la situation
+Autre :
+
+As-tu souvent des difficultés à réviser seul(e)
+Pas souvent / Parfois / Rarement / Jamais
+
+As-tu déjà cherché à travailler ou réviser avec d’autres étudiants ?
+Pas souvent / Parfois / Rarement / Jamais
+
+Si oui, comment trouves-tu habituellement ces partenaires d’étude ?
+Amis / Réseaux sociaux / Plateforme universitaire / Autre
+
+Quelles sont les principales difficultés pour travailler avec d’autres ?
+Horaires incompatibles / Manque de motivation / Trouver personnes sérieuses / Pas mêmes matières / Manque de lieu
+
+... (autres questions et contact)
+            </pre>
+          </div>
+
+          <p style="margin-top:10px">
+            <!-- Remplace le "#" par le lien de ton Google Form / Typeform -->
+            <a class="btn" href="#" target="_blank">Ouvrir le questionnaire (remplacez le lien)</a>
+            <a class="btn ghost" href="#results">Voir les résultats</a>
+          </p>
+        </section>
+
+        <section id="results" class="card">
+          <h3>Résultats de l'enquête</h3>
+          <p class="small">Tu peux importer un fichier JSON/CSV contenant les réponses. Si aucun fichier n'est fourni, la page affiche un jeu de données d'exemple.</p>
+
+          <div class="notice" style="margin-bottom:12px">
+            <strong>Format attendu (JSON)</strong> : un tableau d'objets. Exemple:
+            <pre style="margin:8px 0">[
+  {"niveau":"Bac +3","pref":"Seul(e)","difficulte":"Horaires incompatibles","trouve":"Amis"},
+  {"niveau":"Bac +2","pref":"En grand groupe / collectif","difficulte":"Manque de lieu","trouve":"Réseaux sociaux"}
+]</pre>
+          </div>
+
+          <div class="import-row" style="margin-bottom:12px">
+            <input id="fileInput" type="file" accept=".json,.csv" />
+            <button id="loadSample" class="btn">Charger exemple</button>
+            <button id="resetBtn" class="btn ghost">Réinitialiser</button>
+          </div>
+
+          <div class="charts" aria-live="polite">
+            <div class="chart-wrap card">
+              <h4>Préférence de révision</h4>
+              <canvas id="prefChart" height="220"></canvas>
+            </div>
+
+            <div class="chart-wrap card">
+              <h4>Principales difficultés</h4>
+              <canvas id="difficulteChart" height="220"></canvas>
+            </div>
+
+            <div class="chart-wrap card">
+              <h4>Méthode de rencontre des partenaires</h4>
+              <canvas id="trouveChart" height="220"></canvas>
+            </div>
+
+            <div class="chart-wrap card">
+              <h4>Niveaux d'études (répartition)</h4>
+              <canvas id="niveauChart" height="220"></canvas>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <aside>
+        <section class="card">
+          <h4>Contact / Participation</h4>
+          <p class="small">Tu veux recevoir les résultats ou participer au projet VAL ?</p>
+          <p>Email de contact : <a href="mailto:contact@val-projet.example">contact@val-projet.example</a></p>
+          <p class="small" style="margin-top:10px">Tu peux aussi ouvrir une issue sur ce dépôt pour proposer des idées ou des données.</p>
+        </section>
+
+        <section class="card">
+          <h4>Déploiement (rapide)</h4>
+          <ol class="small">
+            <li>Ajouter `index.html` et le dossier `assets/VAL.pdf` dans le dépôt.</li>
+            <li>Optionnel : créer `data/results.json` avec les réponses.</li>
+            <li>Activer GitHub Pages (Settings → Pages → branch `main` / dossier `/root`).</li>
+          </ol>
+        </section>
+
+        <section class="card">
+          <h4>Notes</h4>
+          <p class="small">Les graphiques utilisent Chart.js (CDN). Les données restent côté client (aucun envoi serveur).</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    © VAL — Projet étudiant. Affiche et questionnaire fournis par l'équipe VAL.
+  </footer>
+
+  <script>
+    // ---------- Utilitaires ----------
+    function countBy(arr, key) {
+      const m = new Map();
+      arr.forEach(o => {
+        const v = o[key] || '(vide)';
+        m.set(v, (m.get(v) || 0) + 1);
+      });
+      return Object.fromEntries([...m.entries()].sort((a,b)=>b[1]-a[1]));
+    }
+
+    // ---------- Chart setup ----------
+    const prefCtx = document.getElementById('prefChart').getContext('2d');
+    const diffCtx = document.getElementById('difficulteChart').getContext('2d');
+    const trouveCtx = document.getElementById('trouveChart').getContext('2d');
+    const nivCtx = document.getElementById('niveauChart').getContext('2d');
+
+    let charts = [];
+
+    function drawBar(ctx, labels, values, title) {
+      return new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: title,
+            data: values,
+            borderRadius: 6,
+            barPercentage: 0.75
+          }]
+        },
+        options: {
+          responsive:true,
+          plugins:{legend:{display:false}},
+          scales:{
+            y:{beginAtZero:true, ticks:{precision:0}}
+          }
+        }
+      });
+    }
+
+    function updateCharts(data) {
+      // data: array d'objets
+      const pref = countBy(data, 'pref');
+      const diff = countBy(data, 'difficulte');
+      const trouve = countBy(data, 'trouve');
+      const niv = countBy(data, 'niveau');
+
+      // cleanup existing charts
+      charts.forEach(c=>c?.destroy?.());
+      charts = [];
+
+      charts.push(drawBar(prefCtx, Object.keys(pref), Object.values(pref), 'Préférence'));
+      charts.push(drawBar(diffCtx, Object.keys(diff), Object.values(diff), 'Difficultés'));
+      charts.push(drawBar(trouveCtx, Object.keys(trouve), Object.values(trouve), 'Trouvés via'));
+      charts.push(drawBar(nivCtx, Object.keys(niv), Object.values(niv), 'Niveaux'));
+    }
+
+    // ---------- Sample data (si aucun fichier) ----------
+    const sample = [
+      {"niveau":"Bac +3","pref":"Seul(e)","difficulte":"Horaires incompatibles","trouve":"Amis"},
+      {"niveau":"Bac +2","pref":"En grand groupe / collectif","difficulte":"Manque de lieu","trouve":"Réseaux sociaux"},
+      {"niveau":"Bac +3","pref":"Peu importe, selon la situation","difficulte":"Manque de motivation commune","trouve":"Plateforme universitaire"},
+      {"niveau":"Bac +5","pref":"Seul(e)","difficulte":"Difficulté à trouver des personnes sérieuses","trouve":"Amis"},
+      {"niveau":"Bac +1","pref":"En grand groupe / collectif","difficulte":"Horaires incompatibles","trouve":"Réseaux sociaux"},
+      {"niveau":"Bac +3","pref":"Seul(e)","difficulte":"Pas les mêmes matières","trouve":"Amis"}
+    ];
+
+    // load sample on start
+    updateCharts(sample);
+
+    // ---------- File import (JSON or CSV) ----------
+    const fileInput = document.getElementById('fileInput');
+    const loadSample = document.getElementById('loadSample');
+    const resetBtn = document.getElementById('resetBtn');
+
+    loadSample.addEventListener('click', ()=> {
+      updateCharts(sample);
+      alert('Exemple chargé (données fictives). Pour utiliser vos données, importez un fichier JSON/CSV.');
+    });
+
+    resetBtn.addEventListener('click', ()=> {
+      updateCharts([]);
+    });
+
+    fileInput.addEventListener('change', (e)=>{
+      const f = e.target.files[0];
+      if(!f) return;
+      const name = f.name.toLowerCase();
+      const reader = new FileReader();
+      reader.onload = function(ev){
+        const text = ev.target.result;
+        try {
+          if(name.endsWith('.json')) {
+            const data = JSON.parse(text);
+            if(!Array.isArray(data)) throw new Error('Le JSON doit être un tableau d\'objets.');
+            updateCharts(data);
+            alert('Données JSON chargées ('+data.length+' réponses).');
+          } else if(name.endsWith('.csv')) {
+            // parse simple CSV — première ligne headers
+            const lines = text.trim().split(/\r?\n/);
+            const headers = lines.shift().split(',').map(h=>h.trim());
+            const rows = lines.map(line => {
+              const cols = line.split(',').map(c=>c.trim());
+              const obj = {};
+              headers.forEach((h,i)=>obj[h]=cols[i]??'');
+              return obj;
+            });
+            updateCharts(rows);
+            alert('Données CSV chargées ('+rows.length+' réponses). Assurez-vous que les colonnes s\'appellent: niveau,pref,difficulte,trouve');
+          } else {
+            alert('Format non supporté. Utilisez .json ou .csv');
+          }
+        } catch(err){
+          alert('Erreur lors de lecture du fichier : ' + err.message);
+          console.error(err);
+        }
+      };
+      reader.readAsText(f, 'utf-8');
+    });
+
+    // Si tu veux charger automatiquement data/results.json si présent sur le repo
+    (async function tryAutoLoad(){
+      try {
+        const res = await fetch('data/results.json', {cache:'no-cache'});
+        if(!res.ok) return;
+        const j = await res.json();
+        if(Array.isArray(j) && j.length>0){
+          updateCharts(j);
+          console.log('Données auto chargées depuis data/results.json');
+        }
+      } catch(e){
+        // silencieux si pas présent
+      }
+    })();
+  </script>
+</body>
+</html>
